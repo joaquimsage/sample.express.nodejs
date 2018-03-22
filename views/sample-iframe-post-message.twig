@@ -1,0 +1,104 @@
+{% extends 'layout.twig' %}
+
+{% block body %}
+    <img src="images/sage_one_gac_bot.png" style="width: 300px; height: 200px">
+    <h1>{{ title }}</h1>
+    <p>Welcome to {{ title }}</p>
+    <p> please, activate the web component to talk with Pegg </p>
+
+    <div>
+        <div style="">
+            <div class="title" data-toggle-nav-bar="">
+                <p>Sage Business Cloud</p>
+                Contabilidad y Facturación
+            </div>
+            <div class="wrapper-content">
+                <div class="header">
+                    <h1>Empieza poco a poco y sueña a lo grande </h1>
+                </div>
+                <div class="section">
+                    Con Contabilidad y Facturación tendrás a tu alcance una potente solución de contabilidad y
+                    facturación
+                    en
+                    modalidad cloud. Toma decisiones efectivas e inteligentes sobre tus finanzas con confianza.<br>
+                    <p>&nbsp;</p>
+                </div>
+            </div>
+
+            <div>
+                <div class="header">
+                    <h1>Do you want more information on this product?</h1>
+
+                    <form method="post" id="qna-form">
+
+                        <label for="inpEmail">Email address</label>
+                        <input type="text" id="inpEmail" placeholder="Enter email">
+
+                        <label for="inpName">Name</label>
+                        <input type="text" id="inpName" placeholder="Enter name">
+
+                        <label for="inpLastName">Last Name</label>
+                        <input type="text" id="inpLastName" placeholder="Enter last name">
+
+                        <br>
+                        <label for="inpQuestion">Question:</label>
+                        <br>
+                        <textarea id="inpQuestion" placeholder="Enter your question" rows="4" cols="50">
+
+                        </textarea>
+
+                        <p>
+                            <input type="submit" value="Send question">
+                        </p>
+
+                        <p>
+                            <button id="send">Capture info and send to WC</button>
+                        </p>
+                    </form>
+                </div>
+
+            </div>
+
+        </div>
+
+        <div style="clear: both; display: block;">
+            &nbsp;
+        </div>
+
+        <div style="width: 30%;height: 700px; align-content: right">
+            <iframe  id="wcReceiver" src="http://127.0.0.1:8000/?country=UK&locale=en&product=SAGE50&subproduct=PAYROLL&secret=Vgpi9ik74O4.cwA.Qes.6f0WtOjGGK3hRbnVIhooR_6soxJuftZAdsyoAGPw8dY&style=example_1&chat_title=Chat with Pegg!"
+                    style="width: 350px;height: 500px;">
+                <p>Your browser does not support iframes. Please try to update your browser or use Chrome, Safari or Firefox</p>
+            </iframe>
+        </div>
+
+
+    </div>
+
+    <script language="JavaScript">
+      window.onload = function() {
+        // Get the window displayed in the iframe.
+        var receiver = document.getElementById('wcReceiver').contentWindow;
+
+        // A function to handle sending messages.
+        function sendMessage(e) {
+          // Prevent any default browser behaviour.
+          e.preventDefault();
+
+          // Send a message with the text 'Hello Treehouse!' to the receiver window.
+          let nameUser = document.getElementById('inpName').value;
+          let lastNameUser = document.getElementById('inpLastName').value;
+          let emailUser = document.getElementById('inpEmail').value;
+          receiver.postMessage(nameUser, 'http://127.0.0.1:8000/');
+        }
+
+        // Get a reference to the 'Send Message' button.
+        var btn = document.getElementById('send');
+
+        // Add an event listener that will execute the sendMessage() function
+        // when the send button is clicked.
+        btn.addEventListener('click', sendMessage);
+      }
+    </script>
+
+{% endblock %}

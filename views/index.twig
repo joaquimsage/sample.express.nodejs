@@ -1,0 +1,166 @@
+{% extends 'layout.twig' %}
+
+{% block body %}
+    <img src="images/sage_one_gac_bot.png" style="width: 300px; height: 200px">
+    <h1>{{ title }}</h1>
+    <p>Welcome to {{ title }}</p>
+    <div>
+        <div style="">
+            <div class="title" data-toggle-nav-bar="">
+                Start small, dream big
+                Get powerful tools for growing your business faster with our affordable Accounting product. As part of Sage Business Cloud, it’s all you’ll ever need to start and grow your business.
+                Tackle accounting with your own two hands
+                Small business solutions that help you take care of admin, lock down your numbers, and run your business like a pro.
+            </div>
+
+            <div style="width: 100%; display: table;">
+
+                <div style="display: table-row">
+                    <div style="width: 500px; display: table-cell; align-content: left; vertical-align: top;">
+                        <div>
+                            <h1>Sage Business Cloud Financials</h1>
+                        </div>
+                        <div>
+                            Still need a desktop accounting solution but with cloud connectivity?
+                            Sage 50cloud works with Microsoft Office 365.  It's ideal for businesses that need the power of desktop accounting software with the freedom and security of the cloud.
+                            <br>
+                            Explore Sage 50cloud
+                            Organize your finances
+                            Pay bills and get paid
+                            Manage cash flow and costs
+                            Plan and track inventory
+                            Manage jobs and expenses
+                            <p>Do business your way</p>
+
+                            You’ll love what Sage Business Cloud small business accounting solutions will do for you.
+                        </div>
+                        <div>
+                            <h1>Do you want more information on this product?</h1>
+
+                            <form method="post" id="qna-form">
+
+                                <label for="inpEmail">Email address</label>
+                                <input type="text" id="inpEmail" placeholder="Enter email">
+
+                                <label for="inpName">Name</label>
+                                <input type="text" id="inpName" placeholder="Enter name">
+
+                                <label for="inpLastName">Last Name</label>
+                                <input type="text" id="inpLastName" placeholder="Enter last name">
+
+                                <br>
+                                <label for="inpQuestion">Question:</label>
+                                <br>
+                                <textarea id="inpQuestion" placeholder="Enter your question" rows="4" cols="50">
+
+                        </textarea>
+
+                                <p>
+                                    <input id="btnSubmitQuery" type="submit" value="Send question">
+                                </p>
+
+                                <p>
+                                    <button id="send">Capture info and send to WC</button>
+                                </p>
+                            </form>
+                        </div>
+                    </div>
+
+                    <div style="display: table-cell;width: 30%;height: 700px; align-content: right; vertical-align: top;">
+                        <iframe id="wcReceiver"
+                                src="http://127.0.0.1:8000/?country=UK&locale=en&product=SAGE50&subproduct=PAYROLL&secret=Vgpi9ik74O4.cwA.Qes.6f0WtOjGGK3hRbnVIhooR_6soxJuftZAdsyoAGPw8dY&style=example_1&chat_title=Chat with Pegg Try 7!"
+                                style="width: 350px;height: 500px;">
+                            <p>Your browser does not support iframes. Please try to update your browser or use Chrome,
+                                Safari or Firefox</p>
+                        </iframe>
+                    </div>
+                </div>
+
+
+            </div>
+
+        </div>
+
+
+    </div>
+
+    <script language="JavaScript">
+      window.onload = function () {
+        // Get the window displayed in the iframe.
+        var receiver = document.getElementById('wcReceiver').contentWindow;
+
+        // A function to handle sending messages.
+        function sendMessage(e) {
+          // Prevent any default browser behaviour.
+          e.preventDefault();
+
+          // Send a message with the text 'Hello Treehouse!' to the receiver window.
+          var nameUser = document.getElementById('inpName').value;
+          var lastNameUser = document.getElementById('inpLastName').value;
+          var emailUser = document.getElementById('inpEmail').value;
+          var question = document.getElementById('inpQuestion').value;
+
+          receiver.postMessage({
+            'nameUser': nameUser,
+            'lastNameUser': lastNameUser,
+            'emailUser': emailUser,
+            'question': question,
+            'urlHostPage': document.location.href
+          }, 'http://127.0.0.1:8000/');
+        }
+
+        // Get a reference to the 'Send Message' button.
+        var btn = document.getElementById('send');
+        btn.addEventListener('click', sendMessage);
+        var questionBox = document.getElementById('inpQuestion');
+        questionBox.addEventListener("blur", sendMessage);
+
+
+        /*********/
+        /* Listen to replies from the Iframe */
+        /*********/
+        let defaultBtnColor = 'grey';
+        let maxTimesAssist = 20;
+        let myInterval;
+
+        function toggleColor(element) {
+
+          return function() {
+            maxTimesAssist = maxTimesAssist -1;
+            let color = '#22DDEE';
+            if (defaultBtnColor === element.style.backgroundColor) {
+              element.style.backgroundColor = color;
+            } else {
+              element.style.backgroundColor = defaultBtnColor;
+            }
+
+            if (maxTimesAssist<0) {
+              element.style.backgroundColor = defaultBtnColor;
+              maxTimesAssist = 20;
+              clearInterval(myInterval);
+            }
+          };
+
+        }
+
+        /**
+         * @param {object} e
+         */
+        function receiveMessageFromIFrame(e) {
+
+          let peggMessageObj = e.data;
+
+          if (peggMessageObj.action === 'assistSendForm') {
+            let btnSend = document.getElementById('btnSubmitQuery');
+            defaultBtnColor = btnSend.style.backgroundColor;
+
+            myInterval = setInterval(toggleColor(btnSend), 800);
+          }
+
+        }
+
+        window.addEventListener('message', receiveMessageFromIFrame);
+      }
+    </script>
+
+{% endblock %}
