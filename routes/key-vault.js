@@ -15,8 +15,8 @@ router.get('/', function (req, res, next) {
     throw new ReferenceError('QNA-SUBSCRIPTION-KEY-SBC-ACCOUNTING-UK does not exist.');
   }
 
-  var qnaBotSupportedLocales = config.get('QNA-BOT-SUPPORTED-LOCALES');
-  var qnaBotSubscriptionKeySbcAcc = config.get('QNA-SUBSCRIPTION-KEY-SBC-ACCOUNTING-UK');
+  let qnaBotSupportedLocales = config.get('QNA-BOT-SUPPORTED-LOCALES');
+  let qnaBotSubscriptionKeySbcAcc = config.get('QNA-SUBSCRIPTION-KEY-SBC-ACCOUNTING-UK');
 
 
   res.render('key-vault', {
