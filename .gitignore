@@ -2,9 +2,10 @@ node_modules
 /.vs/botchat/v14/.suo
 /.vs/config/applicationhost.config
 /Web.config
-/config
+/config/private.json
 **/.vscode
 .vscode
 npm-debug.log*
 debug.log
 .idea
+/config/index.js
