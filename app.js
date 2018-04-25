@@ -6,6 +6,7 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
 var index = require('./routes/index');
+var keyVault = require('./routes/key-vault');
 var sampleIframePostMessage = require('./routes/sample-iframe-post-message');
 var users = require('./routes/users');
 
@@ -24,6 +25,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', index);
+app.use('/key-vault', keyVault);
 app.use('/sample-iframe-post-message', sampleIframePostMessage);
 app.use('/users', users);
 

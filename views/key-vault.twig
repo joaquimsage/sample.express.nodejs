@@ -1,0 +1,29 @@
+{% extends 'layout.twig' %}
+
+{% block body %}
+
+
+    <h1>Key Vault results</h1>
+
+
+    <h3>Public keys</h3>
+
+    <div style="font-style:bold;">
+      {{keyVaultKey}}
+      is equal to
+      {{keyVaultValue}}
+    </div>
+
+
+    <h3>Private keys</h3>
+
+    <div style="font-style:bold;">
+         {{privateKeyVaultKey}}
+        is equal to
+        {{privateKeyVaultValue}}
+    </div>
+
+
+
+
+{% endblock %}
