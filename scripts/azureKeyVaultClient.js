@@ -2,27 +2,41 @@
 const KeyVault = require('azure-keyvault');
 const AuthenticationContext = require('adal-node').AuthenticationContext;
 
-const clientId = process.env.CLIENT_ID;     //"c506f1a5-60aa-4c5e-8146-b2a322c6ef34";
-const clientSecret = process.env.CLIENT_SECRET; //"fq/0iLXCe4UNQqr8+FFap946hxC5PfVzWk5rVtBcuqc=";
-const vaultUri = process.env.VAULT_URI;     //"https://quinokeyvaultsample.vault.azure.net/";
+let clientId = '';     //"c506f1a5-60aa-4c5e-8146-b2a322c6ef34";
+let clientSecret = ''; //"fq/0iLXCe4UNQqr8+FFap946hxC5PfVzWk5rVtBcuqc=";
+let vaultUri = '';     //"https://quinokeyvaultsample.vault.azure.net/";
 const suffixSecretsUri = 'secrets/';
 
 
 class AzureKeyVaultClient {
 
-
+  /**
+   * Each client is an instance of this class. Maybe we need in the same script
+   * to call the DEV and STAGE Azure Key Vault. So we might nee 2 run env at the same time.
+   */
   constructor() {
+
+    this.clientId = process.env.CLIENT_ID;     //"c506f1a5-60aa-4c5e-8146-b2a322c6ef34";
+    this.clientSecret = process.env.CLIENT_SECRET; //"fq/0iLXCe4UNQqr8+FFap946hxC5PfVzWk5rVtBcuqc=";
+    this.vaultUri = process.env.VAULT_URI;     //"https://quinokeyvaultsample.vault.azure.net/";
+    clientId = this.clientId;
+    clientSecret = this.clientSecret;
+    vaultUri = this.vaultUri;
 
     this._credentials = new KeyVault.KeyVaultCredentials(this.authenticator);
     this._client = new KeyVault.KeyVaultClient(this._credentials);
     this._secretsInAzure = [];
   }
 
-
+  /**
+   * @param challenge
+   * @param {function} callback
+   *
+   */
   authenticator(challenge, callback) {
 
     // Create a new authentication context.
-    var context = new AuthenticationContext(challenge.authorization);
+    let context = new AuthenticationContext(challenge.authorization);
 
     // Use the context to acquire an authentication token.
     return context.acquireTokenWithClientCredentials(challenge.resource, clientId, clientSecret, function (err, tokenResponse) {
@@ -30,7 +44,7 @@ class AzureKeyVaultClient {
         throw err;
       }
       // Calculate the value to be set in the request's Authorization header and resume the call.
-      var authorizationValue = tokenResponse.tokenType + ' ' + tokenResponse.accessToken;
+      let authorizationValue = tokenResponse.tokenType + ' ' + tokenResponse.accessToken;
 
       return callback(null, authorizationValue);
     });
@@ -38,29 +52,32 @@ class AzureKeyVaultClient {
   }
 
   /**
+   * It expects a callback function which will receive an object representing a secretObject containing key and value.
+   * It executes callbackOnSuccess for each secret key that exists in Azure Key Vault.
    * @param {function} callbackOnSuccess
    */
-  getAllSecrets( callbackOnSuccess ) {
+  getAllSecrets(callbackOnSuccess) {
 
     let _this = this;
 
-    this._client.getSecrets(vaultUri, {'maxresults': 25}, function (err, secretResults) {
+    this._client.getSecrets(this.vaultUri, {'maxresults': 25}, function (err, secretResults) {
 
       if (err) {
         throw err;
       }
 
-      secretResults.forEach( (secretKeyObj) => {
+      secretResults.forEach((secretKeyObj) => {
 
         let uriSecretKeyVault = secretKeyObj.id;
-        let secretKey = uriSecretKeyVault.replace(vaultUri + suffixSecretsUri, '');
+        let secretKey = uriSecretKeyVault.replace(_this.vaultUri + _this.suffixSecretsUri, '');
 
         _this._client.getSecret(uriSecretKeyVault, (err, result) => {
 
-          console.log(secretKey);
-          console.log(result.value);
+          if (err) {
+            throw err;
+          }
 
-          let objSecret = { 'key':secretKey, 'value':result.value };
+          let objSecret = {'key': secretKey, 'value': result.value};
 
           _this._secretsInAzure.push(objSecret);
 
@@ -73,37 +90,6 @@ class AzureKeyVaultClient {
 
   }
 
-
-
-
-  _getSecrets(callbackOnSuccess) {
-
-    let _this = this;
-    this._client.getSecrets(vaultUri, {'maxresults': 25}, function (err, result) {
-
-      if (err) {
-        throw err;
-      }
-
-      result.forEach((secretKeyObj) => {
-
-        console.log(secretKeyObj.id);
-        console.log(' el valor del cual es ');
-        console.log(_this._getSecretValue(secretKeyObj.id));
-
-      });
-    });
-  }
-
-
-  _getSecretValue(keyVaultUri) {
-
-    return client.getSecret(keyVaultUri, (err, result) => {
-
-      console.log(result.value);
-      return result.value;
-    });
-  }
 }
 
 module.exports = AzureKeyVaultClient;
