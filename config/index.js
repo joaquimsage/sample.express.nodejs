@@ -9,12 +9,13 @@ var env = process.env.NODE_ENV || 'local';
 var privateFile = path.join(__dirname, "private.json");
 var publicFile = path.join(__dirname, "public.json");
 
-let azureKeyVaultConfigSetter = function (azureSecret) {
-  config.set(azureSecret.key, azureSecret.value);
+let azureKeyVaultConfigSetter = function (azureSecret, options) {
+
+  options.config.set(azureSecret.key, azureSecret.value);
 };
 nconf.Provider.prototype.azureKeyVault = function() {
   let azureKeyVaultClientObj = new azureKeyVaultClientClass();
-  azureKeyVaultClientObj.getAllSecrets( azureKeyVaultConfigSetter );
+  azureKeyVaultClientObj.getAllSecrets( azureKeyVaultConfigSetter, {'config': this} );
   return this;
 };
 

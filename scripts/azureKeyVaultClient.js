@@ -56,7 +56,7 @@ class AzureKeyVaultClient {
    * It executes callbackOnSuccess for each secret key that exists in Azure Key Vault.
    * @param {function} callbackOnSuccess
    */
-  getAllSecrets(callbackOnSuccess) {
+  getAllSecrets(callbackOnSuccess, optional) {
 
     let _this = this;
 
@@ -69,7 +69,7 @@ class AzureKeyVaultClient {
       secretResults.forEach((secretKeyObj) => {
 
         let uriSecretKeyVault = secretKeyObj.id;
-        let secretKey = uriSecretKeyVault.replace(_this.vaultUri + _this.suffixSecretsUri, '');
+        let secretKey = uriSecretKeyVault.replace(vaultUri + suffixSecretsUri, '');
 
         _this._client.getSecret(uriSecretKeyVault, (err, result) => {
 
@@ -77,11 +77,12 @@ class AzureKeyVaultClient {
             throw err;
           }
 
+
           let objSecret = {'key': secretKey, 'value': result.value};
 
           _this._secretsInAzure.push(objSecret);
 
-          callbackOnSuccess(objSecret);
+          callbackOnSuccess(objSecret, optional);
         });
 
       });
