@@ -1,8 +1,8 @@
 var KeyVault = require('azure-keyvault');
 var AuthenticationContext = require('adal-node').AuthenticationContext;
 
-var clientId = "c506f1a5-60aa-4c5e-8146-b2a322c6ef34";
-var clientSecret = "fq/0iLXCe4UNQqr8+FFap946hxC5PfVzWk5rVtBcuqc=";
+var clientId = "";
+var clientSecret = "";
 var vaultUri = "https://quinokeyvaultsample.vault.azure.net/";
 
 // Authenticator - retrieves the access token
@@ -44,13 +44,6 @@ client.getSecrets(vaultUri, {'maxresults': 25}, function (err, result) {
 
   });
 
-/*
-  console.log('resultado = ' );
-  console.log(result);
-
-  console.log(result[0].id);
-  */
- // loop(result.nextLink);
 });
 /**********************************************************/
 
@@ -62,29 +55,3 @@ function getSecretValue(keyVaultUri) {
     return result.value;
   });
 }
-
-
-/*
-
-client.setSecret(vaultUri, 'mysecret', 'my password', options, function (err, secretBundle) {
-
-  // List all secrets
-  var parsedId = KeyVault.parseSecretIdentifier(secretBundle.id);
-  client.getSecrets(parsedId.vault, parsedId.name, function (err, result) {
-    if (err) throw err;
-
-    var loop = function (nextLink) {
-      if (nextLink !== null && nextLink !== undefined) {
-        client.getSecretsNext(nextLink, function (err, res) {
-          console.log(res);
-          loop(res.nextLink);
-        });
-      }
-    };
-
-    console.log(result);
-    loop(result.nextLink);
-  });
-});
-
-*/

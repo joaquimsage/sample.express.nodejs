@@ -1,4 +1,4 @@
-/* Azure key packages required */
+/* ...Azure key packages required... */
 const KeyVault = require('azure-keyvault');
 const AuthenticationContext = require('adal-node').AuthenticationContext;
 
@@ -88,9 +88,20 @@ class AzureKeyVaultClient {
       });
     });
 
+  }
 
+  setSecret(secretKey, secretValue, callbackOnFinish) {
+
+    let _this = this;
+    let secretOptions = {
+      contentType: 'test secret'
+    };
+
+    this._client.setSecret(this.vaultUri, secretKey, secretValue, secretOptions, callbackOnFinish);
   }
 
 }
 
-module.exports = AzureKeyVaultClient;
+module.exports = {
+  AzureKeyVaultClient: AzureKeyVaultClient
+};
