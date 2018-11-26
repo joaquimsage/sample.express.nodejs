@@ -1,6 +1,7 @@
 var KeyVault = require('azure-keyvault');
 var AuthenticationContext = require('adal-node').AuthenticationContext;
 
+// Should complain about var
 var clientId = "";
 var clientSecret = "";
 var vaultUri = "https://quinokeyvaultsample.vault.azure.net/";
