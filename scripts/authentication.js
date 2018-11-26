@@ -4,9 +4,8 @@ var AuthenticationContext = require('adal-node').AuthenticationContext;
 // Should complain about var
 var clientId = "";
 var clientSecret = "";
-var vaultUri = "https://quinokeyvaultsample.vault.azure.net/";
+let vaultUri = "https://quinokeyvaultsample.vault.azure.net/";
 
-var onlyChanges = 'It only checks files changeed or  lines changed?';
 // Authenticator - retrieves the access token
 var authenticator = function (challenge, callback) {
 
