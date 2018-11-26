@@ -1,0 +1,26 @@
+{
+  "extends": "airbnb-base",
+  "plugins": [
+    "mocha"
+  ],
+  "rules": {
+    "prefer-template": "off",
+    "object-shorthand": "off",
+    "comma-dangle": ["error", {
+      "arrays": "never",
+      "objects": "ignore",
+      "imports": "ignore",
+      "exports": "ignore",
+      "functions": "ignore"
+    }],
+    "no-underscore-dangle": "off",
+    "prefer-const": "off",
+    "max-len": ["error", { "code": 200 }],
+    "padded-blocks": "off",
+    "no-console":0,
+    "no-useless-concat": "off",
+    "class-methods-use-this": "off",
+    "quotes": "off",
+    "mocha/no-exclusive-tests": "error"
+  }
+}

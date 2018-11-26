@@ -10,7 +10,7 @@ let azureKeyVaultConfigSetter = function (azureSecret, options) {
 };
 
 nconf.Provider.prototype.azureKeyVault = function() {
-  let azureKeyVaultClientObj = new azureKeyVaultClientClass();
+  let azureKeyVaultClientObj = new azureKeyVaultClientClass.AzureKeyVaultClient();
   azureKeyVaultClientObj.getAllSecrets( azureKeyVaultConfigSetter, {'config': this} );
   return this;
 };
